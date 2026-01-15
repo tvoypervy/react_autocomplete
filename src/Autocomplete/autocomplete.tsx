@@ -9,7 +9,7 @@ interface Props {
 
 export const Autocomplete = ({ people, delay, onSelected }: Props) => {
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestiosn] = useState(people);
+  const [suggestions, setSuggestions] = useState(people);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +23,7 @@ export const Autocomplete = ({ people, delay, onSelected }: Props) => {
     const delayMs = delay ?? 300;
 
     if (query.trim() === '') {
-      setSuggestiosn(people);
+      setSuggestions(people);
 
       return;
     }
@@ -33,7 +33,7 @@ export const Autocomplete = ({ people, delay, onSelected }: Props) => {
         person.name.toLowerCase().includes(query.toLowerCase()),
       );
 
-      setSuggestiosn(filtered);
+      setSuggestions(filtered);
     }, delayMs);
 
     return () => {
