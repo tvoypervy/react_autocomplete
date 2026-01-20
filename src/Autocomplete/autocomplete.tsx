@@ -17,6 +17,8 @@ export const Autocomplete = ({ people, delay, onSelected }: Props) => {
 
     setQuery(newQuery);
     onSelected(null);
+
+    setIsDropdownOpen(true);
   };
 
   useEffect(() => {
@@ -53,7 +55,6 @@ export const Autocomplete = ({ people, delay, onSelected }: Props) => {
   return (
     <div className={`dropdown ${isDropdownOpen ? 'is-active' : ''}`}>
       <div className="dropdown-trigger">
-        {' '}
         <input
           type="text"
           placeholder="Enter a part of the name"
@@ -63,10 +64,18 @@ export const Autocomplete = ({ people, delay, onSelected }: Props) => {
           onChange={handleInputChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-        />{' '}
+        />
       </div>
-      <div className="dropdown-menu" role="menu" data-cy="suggestions-list">
-        {' '}
+
+      {/* Додаємо onMouseDown з preventDefault, щоб клік по меню (або скролбару)
+        не забирав фокус з інпуту і не викликав onBlur передчасно.
+      */}
+      <div
+        className="dropdown-menu"
+        role="menu"
+        data-cy="suggestions-list"
+        onMouseDown={event => event.preventDefault()}
+      >
         <div className="dropdown-content">
           {suggestions.length > 0 &&
             suggestions.map(person => (
@@ -74,25 +83,27 @@ export const Autocomplete = ({ people, delay, onSelected }: Props) => {
                 className="dropdown-item"
                 data-cy="suggestion-item"
                 key={person.slug}
-                onMouseDown={() => handleSuggestionClick(person)}
+                // Тепер можна використовувати onClick замість onMouseDown
+                onClick={() => handleSuggestionClick(person)}
+                role="button"
+                style={{ cursor: 'pointer' }}
               >
-                {' '}
                 <p
                   className={
                     person.sex === 'm' ? 'has-text-link' : 'has-text-danger'
                   }
                 >
                   {person.name}
-                </p>{' '}
+                </p>
               </div>
             ))}
           {suggestions.length === 0 && query.trim() !== '' && (
             <div className="dropdown-item" data-cy="no-suggestions-message">
               <p className="has-text-danger">No matching suggestions</p>
             </div>
-          )}{' '}
-        </div>{' '}
-      </div>{' '}
+          )}
+        </div>
+      </div>
     </div>
   );
 };
