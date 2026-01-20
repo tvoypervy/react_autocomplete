@@ -67,9 +67,6 @@ export const Autocomplete = ({ people, delay, onSelected }: Props) => {
         />
       </div>
 
-      {/* Додаємо onMouseDown з preventDefault, щоб клік по меню (або скролбару)
-        не забирав фокус з інпуту і не викликав onBlur передчасно.
-      */}
       <div
         className="dropdown-menu"
         role="menu"
@@ -83,7 +80,6 @@ export const Autocomplete = ({ people, delay, onSelected }: Props) => {
                 className="dropdown-item"
                 data-cy="suggestion-item"
                 key={person.slug}
-                // Тепер можна використовувати onClick замість onMouseDown
                 onClick={() => handleSuggestionClick(person)}
                 role="button"
                 style={{ cursor: 'pointer' }}
